@@ -13,6 +13,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,7 +62,12 @@ public class OkHttpClientSender {
                 log.error("Error trying to download file!");
                 return null;
             }
-            return new ByteArrayResource(response.body().bytes());
+            byte[] bytes = response.body().bytes();
+            Path directory = Paths.get("download");
+            Files.createDirectories(directory);
+            Path path = directory.resolve(fileName);
+            Files.write(path, bytes);
+            return new ByteArrayResource(bytes);
         }catch (IOException ex){
             ex.printStackTrace();
             return null;
