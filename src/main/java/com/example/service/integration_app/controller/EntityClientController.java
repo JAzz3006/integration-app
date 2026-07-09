@@ -1,5 +1,6 @@
 package com.example.service.integration_app.controller;
 import com.example.service.integration_app.clients.OkHttpClientSender;
+import com.example.service.integration_app.clients.RestTemplateClient;
 import com.example.service.integration_app.model.EntityModel;
 import com.example.service.integration_app.model.UpsertEntityRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +17,8 @@ import java.util.UUID;
 @RequestMapping("/api/v1/client/entity")
 public class EntityClientController {
 
-    private final OkHttpClientSender client;
+    //private final OkHttpClientSender client;
+    private final RestTemplateClient client;
     private final ObjectMapper objectMapper;
 
     @GetMapping
@@ -55,7 +57,4 @@ public class EntityClientController {
         client.deleteEntity(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
-
-
 }

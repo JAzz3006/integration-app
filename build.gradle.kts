@@ -22,6 +22,7 @@ extra["springCloudVersion"] = "2025.0.3"
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
 
 	implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
