@@ -1,21 +1,24 @@
 package com.example.service.integration_app.clients;
+import com.example.service.integration_app.model.EntityModel;
+import com.example.service.integration_app.model.UpsertEntityRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -56,5 +59,48 @@ public class WebClientSender {
                filePath,
                StandardCopyOption.REPLACE_EXISTING
         );
+    }
+
+    public List<EntityModel> getEntityList(){
+        return webClient.get()
+                .uri("/api/v1/entity")
+                .retrieve()
+                .bodyToFlux(EntityModel.class)
+                .collectList()
+                .block();
+    }
+
+    public EntityModel getEntityByName(String name){
+        return webClient.get()
+                .uri("/api/v1/entity/{name}", name)
+                .retrieve()
+                .bodyToMono(EntityModel.class)
+                .block();
+    }
+
+    public EntityModel createEntity(UpsertEntityRequest request){
+        return webClient.post()
+                .uri("/api/v1/entity")
+                .bodyValue(request)
+                .retrieve()
+                .bodyToMono(EntityModel.class)
+                .block();
+    }
+
+    public EntityModel updateEntity(UUID id, UpsertEntityRequest request){
+        return webClient.put()
+                .uri("/api/v1/entity/{id}", id)
+                .bodyValue(request)
+                .retrieve()
+                .bodyToMono(EntityModel.class)
+                .block();
+    }
+
+    public void deleteEntity(UUID id){
+        webClient.delete()
+                .uri("/api/v1/entity/{id}")
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
     }
 }
