@@ -1,7 +1,6 @@
 package com.example.service.integration_app.clients;
 import com.example.service.integration_app.model.EntityModel;
 import com.example.service.integration_app.model.UpsertEntityRequest;
-import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.io.Resource;
@@ -16,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +41,7 @@ public class WebClientSender {
     @SneakyThrows
     public void downloadFile(String fileName){
         Resource resource = webClient.get()
-                .uri("/api/v1/file/{fileName}", fileName)
+                .uri("/api/v1/file/download/{fileName}", fileName)
                 .accept(MediaType.APPLICATION_OCTET_STREAM)
                 .retrieve()
                 .bodyToMono(Resource.class)

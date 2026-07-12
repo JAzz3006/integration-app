@@ -1,5 +1,6 @@
 package com.example.service.integration_app.controller;
 import com.example.service.integration_app.clients.OkHttpClientSender;
+import com.example.service.integration_app.clients.OpenFeignClient;
 import com.example.service.integration_app.clients.RestTemplateClient;
 import com.example.service.integration_app.clients.WebClientSender;
 import com.example.service.integration_app.model.EntityModel;
@@ -10,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +22,8 @@ public class EntityClientController {
     //private final OkHttpClientSender client;
 //    private final RestTemplateClient client;
 //    private final ObjectMapper objectMapper;
-    private final WebClientSender client;
+    //private final WebClientSender client;
+    private final OpenFeignClient client;
 
     @GetMapping
     ResponseEntity<List<EntityModel>> entityList(){
