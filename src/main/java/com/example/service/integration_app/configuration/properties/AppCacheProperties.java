@@ -1,6 +1,5 @@
 package com.example.service.integration_app.configuration.properties;
-import lombok.Data;
-import org.springframework.boot.autoconfigure.cache.CacheType;
+import lombok.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -8,7 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @ConfigurationProperties(prefix = "app.cache")
 public class AppCacheProperties {
 
@@ -17,16 +19,16 @@ public class AppCacheProperties {
     private CacheType cacheType;
 
     @Data
-    public class CacheProperties{
+    public static class CacheProperties{
         private Duration expiry = Duration.ZERO;
     }
 
-    public interface cacheNames{
+    public interface СacheNames{
         String DATABASE_ENTITIES = "databaseEntities";
         String DATABASE_ENTITY_BY_NAME = "databaseEntityByName";
     }
 
-    public enum cacheType{
+    public enum CacheType{
         IN_MEMORY
     }
 }
