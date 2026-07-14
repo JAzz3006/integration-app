@@ -1,0 +1,13 @@
+version: '3'
+name: spring-app-cache
+services:
+  postgres:
+    image: postgres:12.3
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=app_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql

@@ -1,6 +1,26 @@
 app:
   integration:
     base-url: http://localhost:8082
+  cache:
+    cacheType: inMemory
+    cache-names:
+      - databaseEntities
+      - databaseEntityByName
+    caches:
+      databaseEntities:
+        expiry: 5s
+      databaseEntityByName:
+        expiry: 10s
 spring:
+  jpa:
+    generate-ddl: true
   application:
     name: integration-app
+  datasource:
+    url: jdbc:postgresql://localhost:5433/app_db?currentSchema=app_Schema
+    username: postgres
+    password: postgres
+    hikari:
+      schema: app_schema
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS app_schema
+      connection-timeout: 10000
