@@ -1,8 +1,10 @@
 app:
+  redis:
+    enable: true
   integration:
     base-url: http://localhost:8082
   cache:
-    cacheType: inMemory
+    cacheType: redis
     cache-names:
       - databaseEntities
       - databaseEntityByName
@@ -12,6 +14,10 @@ app:
       databaseEntityByName:
         expiry: 10s
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
   jpa:
     generate-ddl: true
   application:
