@@ -58,14 +58,12 @@ public class CacheConfiguration {
         Map<String, RedisCacheConfiguration> redisCacheConfiguration = new HashMap<>();
         appCacheProperties.getCacheNames().forEach(cacheName -> {
             redisCacheConfiguration.put(cacheName, RedisCacheConfiguration.defaultCacheConfig().entryTtl(
-                    appCacheProperties.getCaches().get("cacheName").getExpiry()
+                    appCacheProperties.getCaches().get(cacheName).getExpiry()
             ));
         });
         return RedisCacheManager.builder(lettuceConnectionFactory)
                 .cacheDefaults(defaultConfig)
                 .withInitialCacheConfigurations(redisCacheConfiguration)
                 .build();
-
     }
-
 }

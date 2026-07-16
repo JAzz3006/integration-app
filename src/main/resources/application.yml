@@ -1,6 +1,6 @@
 app:
   redis:
-    enable: true
+    enabled: true
   integration:
     base-url: http://localhost:8082
   cache:
@@ -8,11 +8,14 @@ app:
     cache-names:
       - databaseEntities
       - databaseEntityByName
+      - databaseEntityById
     caches:
       databaseEntities:
-        expiry: 5s
+        expiry: 10m
       databaseEntityByName:
-        expiry: 10s
+        expiry: 10m
+      databaseEntityById:
+        expiry: 10m
 spring:
   data:
     redis:
@@ -23,7 +26,7 @@ spring:
   application:
     name: integration-app
   datasource:
-    url: jdbc:postgresql://localhost:5433/app_db?currentSchema=app_Schema
+    url: jdbc:postgresql://localhost:5433/app_db?currentSchema=app_schema
     username: postgres
     password: postgres
     hikari:

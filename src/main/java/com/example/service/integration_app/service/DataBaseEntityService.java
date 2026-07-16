@@ -1,10 +1,11 @@
 package com.example.service.integration_app.service;
+import com.example.service.integration_app.configuration.properties.AppCacheProperties;
 import com.example.service.integration_app.entity.DataBaseEntity;
 import com.example.service.integration_app.repository.DataBaseEntityRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
@@ -13,20 +14,22 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheManager = "redisCacheManager")
 public class DataBaseEntityService {
 
     private final DataBaseEntityRepository  repository;
 
-    @Cacheable("databaseEntities")
+    @Cacheable(AppCacheProperties.СacheNames.DATABASE_ENTITIES)
     public List<DataBaseEntity> findAll(){
         return repository.findAll();
     }
 
+    @Cacheable(value = AppCacheProperties.СacheNames.DATABASE_ENTITY_BY_ID, key = "#id")
     public DataBaseEntity findBYId(UUID id){
         return repository.findById(id).orElseThrow();
     }
 
-    @Cacheable("databaseEntityByName")
+    @Cacheable(AppCacheProperties.СacheNames.DATABASE_ENTITY_BY_NAME)
     public DataBaseEntity findByName(String name){
         DataBaseEntity probe = new DataBaseEntity();
         probe.setName(name);
@@ -45,10 +48,15 @@ public class DataBaseEntityService {
         return repository.save(forSave);
     }
 
-    @Caching(evict = {
-            @CacheEvict(value = "databaseEntities", allEntries = true),
-            @CacheEvict(value = "databaseEntityByName", allEntries = true)
-    })
+//    @Caching(evict = {
+//            @CacheEvict(value = "databaseEntities", allEntries = true),
+//            @CacheEvict(value = "databaseEntityByName", allEntries = true)
+//    })
+    @CacheEvict(
+            cacheNames = AppCacheProperties.СacheNames.DATABASE_ENTITY_BY_ID,
+            key = "#id",
+            beforeInvocation = true
+    )
     public DataBaseEntity update(UUID id, DataBaseEntity entity){
         DataBaseEntity forUpdate = findBYId(id);
         forUpdate.setName(entity.getName());
@@ -56,10 +64,15 @@ public class DataBaseEntityService {
         return repository.save(forUpdate);
     }
 
-    @Caching(evict = {
-            @CacheEvict(value = "databaseEntities", allEntries = true),
-            @CacheEvict(value = "databaseEntityByName", allEntries = true)
-    })
+//    @Caching(evict = {
+//            @CacheEvict(value = "databaseEntities", allEntries = true),
+//            @CacheEvict(value = "databaseEntityByName", allEntries = true)
+//    })
+    @CacheEvict(
+            cacheNames = AppCacheProperties.СacheNames.DATABASE_ENTITY_BY_ID,
+            key = "#id",
+            beforeInvocation = true
+    )
     public void deleteById(UUID id){
         repository.deleteById(id);
     }

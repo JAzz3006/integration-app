@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -15,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class DataBaseEntity {
+public class DataBaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

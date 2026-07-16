@@ -26,6 +26,7 @@ public class AppCacheProperties {
     public interface СacheNames{
         String DATABASE_ENTITIES = "databaseEntities";
         String DATABASE_ENTITY_BY_NAME = "databaseEntityByName";
+        String DATABASE_ENTITY_BY_ID = "databaseEntityById";
     }
 
     public enum CacheType{
